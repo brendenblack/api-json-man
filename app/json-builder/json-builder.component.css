@@ -1,0 +1,20 @@
+.ng-valid[required], .ng-valid.required  {
+  border-left: 2px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form)  {
+  border-left: 2px solid #a94442; /* red */
+}
+
+.form-section { padding-top: 1em;}
+
+textarea { resize: none;}
+
+.pageheader { 
+  background-color: #563d7c; 
+  color: #cdbfe3; 
+  }
+.pageheader h1 { color: white;}
+
+.pageheader a { color: #cdbfe3;  }
+
