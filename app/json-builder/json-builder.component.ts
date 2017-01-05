@@ -55,9 +55,12 @@ export class JsonBuilderComponent implements OnInit{
             this.model.technicalOwner = "Ms. Technical";
             this.model.technicalOwnerEmail = "technical@emails.com";
             this.model.tags = [ "mytag", "tag2", "tagerrific" ];
+
             let config = new ApiConfiguration();
             config.verb = "GET";
             config.path = "/phone";
+            config.contentTypesConsumed.push(this.contentTypes[1]);
+            config.contentTypesProduced.push(this.contentTypes[2]);
             let param = new ApiConfigurationParameter("param1");
             param.description = "A cool parameter";
             param.parameterType = this.parameterTypes[0];

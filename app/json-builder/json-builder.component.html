@@ -2,7 +2,7 @@
 <div class="row">
     <!-- Cluster f*** form column -->
 
-    <div class="col-sm-12 col-md-8">
+    <div class="col-sm-12 col-md-7">
 
         <ngb-tabset>
             <!-- https://ng-bootstrap.github.io/#/components/tabs -->
@@ -50,13 +50,13 @@
                                 <p id="tagsHelp" class="form-text text-muted">Type a tag and press enter</p>
 
                                 <span class="tag tag-pill tag-primary" *ngFor="let tag of model.tags" style="margin-right:1em;">{{tag}}</span>
-</div>
-</form>
-</section>
-</template>
-</ngb-tab>
+                            </div>
+                        </form>
+                    </section>
+                </template>
+            </ngb-tab>
 
-<ngb-tab title="Business details">
+<ngb-tab title="Owners">
     <template ngbTabContent>
         <section class="container form-section">
             <div class="form-group">
@@ -129,15 +129,16 @@
             </div>
 
             <div class="form-group">
-                <label for="gatewayEnvironments">Gateway environments</label>
+                <label for="gatewayEnvironments">Gateway environments </label>
                 <input type="text" class="form-control" id="gatewayEnvironments" name="gatewayEnvironments" [(ngModel)]="model.gatewayEnvironments">
+                <p class="form-text text-muted">Separate values by commas</p>
             </div>
         </section>
     </template>
 </ngb-tab>
 
 
-<ngb-tab title="API definition">
+<ngb-tab title="Definition">
     <template ngbTabContent>
         <section class="container form-section">
             <form #apiDefinitionForm="ngForm" (ngSubmit)="addApiDefinition()">
@@ -182,7 +183,7 @@
                                 <button class="btn btn-default" type="submit" [disabled]="!parameterForm.form.valid">Add</button>
                             </form>
                             <br>
-                            <table *ngIf="config.parameters != null && config.parameters.length > 0" class="table table-striped">
+                            <table *ngIf="config.parameters != null && config.parameters.length > 0" class="table table-striped table-sm">
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -211,9 +212,10 @@
                                         </td>
                                         <td>
                                             <!-- TODO: center this -->
-                                            <input type="checkbox" class="form-check-input form-control-sm" [(ngModel)]="param.required">
+                                            <input type="checkbox" class="form-control-sm" [(ngModel)]="param.required">
                                          </td>
                                         <td>
+                                            <!-- TODO: remove parameter -->
                                             <button type="button" class="btn btn-danger btn-sm" disabled>x</button>
                                         </td>
                                     </tr>
@@ -229,7 +231,7 @@
 </ngb-tab>
 
 
-<ngb-tab title="Endpoint config">
+<ngb-tab title="Endpoints">
     <template ngbTabContent>
         <section class="container form-section">
             <div class="alert alert-info" role="alert">
@@ -257,7 +259,7 @@
 
 
 <!-- Output column -->
-<div class="col-sm-12 col-md-4">
+<div class="col-sm-12 col-md-5">
     <h2>Output</h2>
     <!--<div *ngIf="apiForm.valid">-->
     <div class="alert alert-warning" role="alert">

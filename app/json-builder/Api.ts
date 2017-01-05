@@ -1,17 +1,17 @@
 export class Api { 
-    name:string;
-    context:string;
+    name:string; // r
+    context:string; // r
     description:string;
-    version:number;
+    version:number; // number instead of string because business rules are enforcing a "v1" convention. Will provide the developer with a number input and prepend the 'v'
     provider:string;
-    tags:string[];
-    transport:string[];
+    tags:string[] = [];
+    transport:string[] = [];
     visibility:string;
-    tiers:string[];
+    tiers:string[] = [];
     cacheTimeout:number;
-    visibleRoles:string[];
-    visibleTenants:string[];
-    sequences:string[];
+    visibleRoles:string[] = [];
+    visibleTenants:string[] = [];
+    sequences:string[] = [];
     subscriptionAvailability:string;
     technicalOwner:string;
     technicalOwnerEmail:string;
