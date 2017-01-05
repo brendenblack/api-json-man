@@ -1,194 +1,206 @@
 <div class="row">
     <!-- Cluster f*** form column -->
 
-    <div class="col-sm-12 col-md-7">
-        <form #apiForm="ngForm">
-            <ngb-tabset>
-                <!-- https://ng-bootstrap.github.io/#/components/tabs -->
-                <ngb-tab title="Design">
+    <div class="col-sm-12 col-md-8 col-lg-6">
 
-                    <template ngbTabContent>
-                        <section class="row container form-section">
-                            <div class="col-sm-12 col-md-6 col-lg-6">
-                                <h4>General details</h4>
-                                <div class="form-group">
-                                    <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" name="name" [(ngModel)]="model.name" required>
-                                </div>
+        <ngb-tabset>
+            <!-- https://ng-bootstrap.github.io/#/components/tabs -->
+            <ngb-tab title="General">
+                <template ngbTabContent>
+                    <section class="container form-section">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="model.name" required>
+                        </div>
 
-                                <div class="form-group">
-                                    <label for="context">Context</label>
-                                    <input type="text" class="form-control" id="context" name="context" [(ngModel)]="model.context" required>
-                                </div>
+                        <div class="form-group">
+                            <label for="context">Context</label>
+                            <input type="text" class="form-control" id="context" name="context" [(ngModel)]="model.context" required>
+                        </div>
 
-                                <div class="form-group">
-                                    <label for="version">Version</label>
-                                    <input type="number" class="form-control" id="version" name="version" [(ngModel)]="model.version" min="1.0" required>
-                                    <p id="versionHelp" class="form-text text-muted">e.g. v1.0.0, 1.0.0, v1.0 or v1.0</p>
-                                </div>
+                        <div class="form-group">
+                            <label for="version">Version</label>
+                            <input type="number" class="form-control" id="version" name="version" [(ngModel)]="model.version" min="1.0" required>
+                            <p id="versionHelp" class="form-text text-muted">e.g. v1.0.0, 1.0.0, v1.0 or v1.0</p>
+                        </div>
 
-                                <div class="form-group">
-                                    <label for="visibility">Visibility</label>
-                                    <select class="form-control" id="visibility" name="visibility" [(ngModel)]="model.visibility" required>
+                        <div class="form-group">
+                            <label for="visibility">Visibility</label>
+                            <select class="form-control" id="visibility" name="visibility" [(ngModel)]="model.visibility" required>
                                         <option *ngFor="let vis of visibilities" [value]="vis">{{vis}}</option>
                                     </select>
-                                </div>
+                        </div>
 
-                                <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3" [(ngModel)]="model.description"></textarea>
-                                </div>
+                        <div class="form-group">
+                            <label for="thumbnail">Thumbnail</label>
+                            <input type="file" class="form-control-file" disabled>
+                            <!-- TODO: does this need to be implemented? -->
+                        </div>
 
-                                <div class="form-group">
-                                    <label for="tags">Tags</label>
-                                    <!--<textarea class="form-control" id="tags" name="tags" rows="3" [(ngModel)]="model.tags"></textarea>
-                                    <p id="tagsHelp" class="form-text text-muted">Include all tags on a single line, seperated by commas (e.g. '<i>phones, multimedia, mobile</i>')</p>-->
-                                    <input type="text" class="form-control" id="tags" name="tags">
-                                    <p id="tagsHelp" class="form-text text-muted">Type a tag and press enter</p>
-                                </div>
-                            </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" [(ngModel)]="model.description"></textarea>
+                        </div>
 
-                            <div class="col-sm-12 col-md-6 col-lg-6 ">
-                                <h4>API definition</h4>
-
-                            </div>
-                        </section>
-                    </template>
-                </ngb-tab>
-
-                <ngb-tab title="Business details">
-                    <template ngbTabContent>
-                        <section class="container form-section">
+                        <form #tagForm="ngForm" (ngSubmit)="addTag()">
                             <div class="form-group">
-                                <label for="businessOwner">Business owner</label>
-                                <input type="text" class="form-control" id="businessOwner" name="businessOwner" [(ngModel)]="model.businessOwner" required>
-                            </div>
+                                <label for="tags">Tags</label>
+                                <!--<textarea class="form-control" id="tags" name="tags" rows="3" [(ngModel)]="model.tags"></textarea>
+                                        <p id="tagsHelp" class="form-text text-muted">Include all tags on a single line, seperated by commas (e.g. '<i>phones, multimedia, mobile</i>')</p>-->
+                                <input type="text" class="form-control" id="tags" name="tags" [(ngModel)]="newTag">
+                                <p id="tagsHelp" class="form-text text-muted">Type a tag and press enter</p>
 
-                            <div class="form-group">
-                                <label for="businessOwnerEmail">Business owner E-mail</label>
-                                <input type="email" class="form-control" id="businessOwnerEmail" name="businessOwnerEmail" [(ngModel)]="model.businessOwnerEmail"
-                                    required>
-                            </div>
+                                <span class="tag tag-pill tag-primary" *ngFor="let tag of model.tags" style="margin-right:1em;">{{tag}}</span>
+</div>
+</form>
+</section>
+</template>
+</ngb-tab>
 
-                            <div class="form-group">
-                                <label for="technicalOwner">Technical owner</label>
-                                <input type="text" class="form-control" id="technicalOwner" name="technicalOwner" [(ngModel)]="model.technicalOwner" required>
-                            </div>
+<ngb-tab title="Business details">
+    <template ngbTabContent>
+        <section class="container form-section">
+            <div class="form-group">
+                <label for="businessOwner">Business owner</label>
+                <input type="text" class="form-control" id="businessOwner" name="businessOwner" [(ngModel)]="model.businessOwner" required>
+            </div>
 
-                            <div class="form-group">
-                                <label for="technicalOwnerEmail">Technical owner E-mail</label>
-                                <input type="email" class="form-control" id="technicalOwnerEmail" name="technicalOwnerEmail" [(ngModel)]="model.technicalOwnerEmail"
-                                    required>
-                            </div>
-                        </section>
-                    </template>
-                </ngb-tab>
+            <div class="form-group">
+                <label for="businessOwnerEmail">Business owner E-mail</label>
+                <input type="email" class="form-control" id="businessOwnerEmail" name="businessOwnerEmail" [(ngModel)]="model.businessOwnerEmail"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="technicalOwner">Technical owner</label>
+                <input type="text" class="form-control" id="technicalOwner" name="technicalOwner" [(ngModel)]="model.technicalOwner" required>
+            </div>
+
+            <div class="form-group">
+                <label for="technicalOwnerEmail">Technical owner E-mail</label>
+                <input type="email" class="form-control" id="technicalOwnerEmail" name="technicalOwnerEmail" [(ngModel)]="model.technicalOwnerEmail"
+                    required>
+            </div>
+        </section>
+    </template>
+</ngb-tab>
 
 
-                <ngb-tab title="Technical">
-                    <template ngbTabContent>
-                        <section class="container form-section">
-                            <div class="form-group">
-                                <label for="provider">Provider</label>
-                                <input type="text" class="form-control" id="provider" name="provider" [(ngModel)]="model.provider" required>
-                            </div>
+<ngb-tab title="Technical">
+    <template ngbTabContent>
+        <section class="container form-section">
+            <div class="form-group">
+                <label for="provider">Provider</label>
+                <input type="text" class="form-control" id="provider" name="provider" [(ngModel)]="model.provider" required>
+            </div>
 
 
 
-                            <div class="form-group">
-                                <label for="transport">Transport protocols</label> <small id="transportHelp" class="text-muted">Hold ctrl to select multiple values</small>
-                                <select multiple class="form-control" id="transport" name="transport" [(ngModel)]="model.transport" required [size]="(transportModes.length > 4) ? 4 : transportModes.length">
+            <div class="form-group">
+                <label for="transport">Transport protocols</label> <small id="transportHelp" class="text-muted">Hold ctrl to select multiple values</small>
+                <select multiple class="form-control" id="transport" name="transport" [(ngModel)]="model.transport" required [size]="(transportModes.length > 4) ? 4 : transportModes.length">
                                     <option *ngFor="let mode of transportModes" [value]="mode">{{mode}}</option>
                                 </select>
-                            </div>
+            </div>
 
-                            <div class="form-group">
-                                <label for="cacheTimeout">Cache timeout</label>
-                                <input type="number" min="0" step="1" class="form-control" id="cacheTimeout" name="cacheTimeout" [(ngModel)]="model.cacheTimeout">
-                            </div>
+            <div class="form-group">
+                <label for="cacheTimeout">Cache timeout</label>
+                <input type="number" min="0" step="1" class="form-control" id="cacheTimeout" name="cacheTimeout" [(ngModel)]="model.cacheTimeout">
+            </div>
 
-                            <div class="form-group">
-                                <label for="tiers">Tiers</label> <small id="transportHelp" class="text-muted">Hold ctrl to select multiple values</small>
-                                <select multiple class="form-control" id="tiers" name="tiers" [(ngModel)]="model.tiers" required [size]="(tiers.length > 4) ? 4 : tiers.length">
+            <div class="form-group">
+                <label for="tiers">Tiers</label> <small id="transportHelp" class="text-muted">Hold ctrl to select multiple values</small>
+                <select multiple class="form-control" id="tiers" name="tiers" [(ngModel)]="model.tiers" required [size]="(tiers.length > 4) ? 4 : tiers.length">
                                     <option *ngFor="let tier of tiers" [value]="tier">{{tier}}</option>
                                 </select>
-                            </div>
+            </div>
 
-                            <div class="form-check">
-                                <label for="responseCaching" class="form-check-label">
+            <div class="form-check">
+                <label for="responseCaching" class="form-check-label">
                                     <input type="checkbox" class="form-check-input" id="responseCaching" name="responseCaching" [(ngModel)]="model.responseCaching">
                                         Response caching
                                 </label>
-                            </div>
+            </div>
 
-                            <div class="form-check">
-                                <label for="defaultVersion" class="form-check-label">
+            <div class="form-check">
+                <label for="defaultVersion" class="form-check-label">
                                     <input type="checkbox" class="form-check-input" id="defaultVersion" name="defaultVersion" [(ngModel)]="model.defaultVersion">
                                         Default version
                                 </label>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="gatewayEnvironments">Gateway environments</label>
-                                <input type="text" class="form-control" id="gatewayEnvironments" name="gatewayEnvironments" [(ngModel)]="model.gatewayEnvironments">
-                            </div>
-                        </section>
-                    </template>
-                </ngb-tab>
-
-
-                <ngb-tab title="API definition">
-                    <template ngbTabContent>
-                        <section class="container form-section">
-                            <div class="alert alert-info" role="alert">
-                                To do...
-                            </div>
-                        </section>
-                    </template>
-                </ngb-tab>
-
-
-                <ngb-tab title="Endpoint config">
-                    <template ngbTabContent>
-                        <section class="container form-section">
-                            <div class="alert alert-info" role="alert">
-                                To do...
-                            </div>
-                        </section>
-                    </template>
-                </ngb-tab>
-
-
-                <!--TODO: app settings -->
-                <ngb-tab title="Settings" [disabled]="true">
-                    <template ngbTabContent>
-                        <section class="container form-section">
-                        </section>
-                    </template>
-                </ngb-tab>
-
-            </ngb-tabset>
-        </form>
-    </div>
-
-
-
-
-
-    <!-- Output column -->
-    <div class="col-sm-12 col-md-5">
-        <h2>Output</h2>
-        <div *ngIf="apiForm.valid">
-            <div class="alert alert-warning" role="alert">
-                <strong>NOTE:</strong> This is a JSON.stringify version of the API model used for development purposes. It
-                is <strong>not the final expected output</strong>.
             </div>
-            <pre>{{diagnostic}}</pre>
-        </div>
 
-        <div *ngIf="!apiForm.valid">
+            <div class="form-group">
+                <label for="gatewayEnvironments">Gateway environments</label>
+                <input type="text" class="form-control" id="gatewayEnvironments" name="gatewayEnvironments" [(ngModel)]="model.gatewayEnvironments">
+            </div>
+        </section>
+    </template>
+</ngb-tab>
+
+
+<ngb-tab title="API definition">
+    <template ngbTabContent>
+        <section class="container form-section">
+            <form #apiDefinitionForm="ngForm" (ngSubmit)="addApiDefinition()">
+                <div class="form-group">
+                    <label for="urlPattern">URL Pattern</label>
+                    <div class="input-group">
+                        <div class="input-group-addon">{{model.context}}/{{model.version}}</div>
+                        <input type="text" class="form-control" id="urlPattern" name="urlPattern">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-check-inline" *ngFor="let verb of verbs">
+                        <input class="form-check-input" type="checkbox" name="urlPatternVerbs" value="verb"> {{verb}}
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-default" [disabled]="!apiDefinitionForm.form.valid">Add</button>
+            </form>
+        </section>
+    </template>
+</ngb-tab>
+
+
+<ngb-tab title="Endpoint config">
+    <template ngbTabContent>
+        <section class="container form-section">
+            <div class="alert alert-info" role="alert">
+                To do...
+            </div>
+        </section>
+    </template>
+</ngb-tab>
+
+
+<!--TODO: app settings -->
+<ngb-tab title="Settings" [disabled]="true">
+    <template ngbTabContent>
+        <section class="container form-section">
+        </section>
+    </template>
+</ngb-tab>
+
+</ngb-tabset>
+
+</div>
+
+
+
+
+
+<!-- Output column -->
+<div class="col-sm-12 col-md-4 col-lg-4 offset-lg-2">
+    <h2>Output</h2>
+    <!--<div *ngIf="apiForm.valid">-->
+    <div class="alert alert-warning" role="alert">
+        <strong>NOTE:</strong> This is a JSON.stringify version of the API model used for development purposes. It is <strong>not the final expected output</strong>.
+    </div>
+    <pre>{{diagnostic}}</pre>
+</div>
+
+<!--<div *ngIf="!apiForm.valid">
             <p class="text-muted">Provide all required fields to view the generated JSON definition.</p>
         </div>
-    </div>
+    </div>-->
 
 </div>

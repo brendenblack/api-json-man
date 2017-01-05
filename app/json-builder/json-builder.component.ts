@@ -12,6 +12,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 export class JsonBuilderComponent implements OnInit{
     ngOnInit(): void {
         // Create default choices
+        this.verbs = [ "GET", "POST", "PUT", "DELETE", "PATCH", "HEAD" ];
         this.visibilities = [ "Public", "Private", "Restricted" ];
         this.transportModes = [ "http", "https" ];
         this.tiers = [ "Unlimited", "Platinum", "Gold", "Silver", "Bronze" ];
@@ -41,15 +42,29 @@ export class JsonBuilderComponent implements OnInit{
             this.model.businessOwnerEmail = "business@emails.com";
             this.model.technicalOwner = "Ms. Technical";
             this.model.technicalOwnerEmail = "technical@emails.com";
+            this.model.tags = [ "mytag", "tag2", "tagerrific" ];
         }
     }
 
+    addTag():void {
+        if (this.newTag != null) {
+            if (this.model.tags.indexOf(this.newTag) < 0) {
+                this.model.tags.push(this.newTag);
+                this.newTag = "";
+            }
+        }  
+    }
+
+    addApiDefinition():void {
+        // todo
+    }
+
+    verbs:string[];
     visibilities:string[];
     transportModes:string[];
     tiers:string[];
     devMode:boolean = true; // TODO: set to false
-
-    selectedTab:string;
+    newTag:string;
 
     model:Api;
 
