@@ -5,20 +5,15 @@
         <form #apiForm="ngForm">
             <ngb-tabset>
                 <!-- https://ng-bootstrap.github.io/#/components/tabs -->
-                <ngb-tab title="Basic">
-                    
+                <ngb-tab title="Design">
+
                     <template ngbTabContent>
-                        <section id="basicForm" class="row container form-section">
+                        <section class="row container form-section">
                             <div class="col-sm-12 col-md-6 col-lg-6">
-                                <h4>Basic details</h4>
+                                <h4>General details</h4>
                                 <div class="form-group">
                                     <label for="name">Name</label>
                                     <input type="text" class="form-control" id="name" name="name" [(ngModel)]="model.name" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="description">Description</label>
-                                    <textarea class="form-control" id="description" name="description" rows="3" [(ngModel)]="model.description"></textarea>
                                 </div>
 
                                 <div class="form-group">
@@ -28,39 +23,62 @@
 
                                 <div class="form-group">
                                     <label for="version">Version</label>
-                                    <input type="number" class="form-control" id="version" name="version" [(ngModel)]="model.version" min="0" step="1" required>
+                                    <input type="number" class="form-control" id="version" name="version" [(ngModel)]="model.version" min="1.0" required>
+                                    <p id="versionHelp" class="form-text text-muted">e.g. v1.0.0, 1.0.0, v1.0 or v1.0</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="visibility">Visibility</label>
+                                    <select class="form-control" id="visibility" name="visibility" [(ngModel)]="model.visibility" required>
+                                        <option *ngFor="let vis of visibilities" [value]="vis">{{vis}}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="description">Description</label>
+                                    <textarea class="form-control" id="description" name="description" rows="3" [(ngModel)]="model.description"></textarea>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="tags">Tags</label>
-                                    <textarea class="form-control" id="tags" name="tags" rows="3" [(ngModel)]="model.tags"></textarea>
-                                    <p id="tagsHelp" class="form-text text-muted">Include all tags on a single line, seperated by commas (e.g. '<i>phones, multimedia, mobile</i>')</p>
+                                    <!--<textarea class="form-control" id="tags" name="tags" rows="3" [(ngModel)]="model.tags"></textarea>
+                                    <p id="tagsHelp" class="form-text text-muted">Include all tags on a single line, seperated by commas (e.g. '<i>phones, multimedia, mobile</i>')</p>-->
+                                    <input type="text" class="form-control" id="tags" name="tags">
+                                    <p id="tagsHelp" class="form-text text-muted">Type a tag and press enter</p>
                                 </div>
                             </div>
 
                             <div class="col-sm-12 col-md-6 col-lg-6 ">
-                                <h4>Business owners</h4>
-                                <div class="form-group">
-                                    <label for="businessOwner">Business owner</label>
-                                    <input type="text" class="form-control" id="businessOwner" name="businessOwner" [(ngModel)]="model.businessOwner" required>
-                                </div>
+                                <h4>API definition</h4>
 
-                                <div class="form-group">
-                                    <label for="businessOwnerEmail">Business owner E-mail</label>
-                                    <input type="email" class="form-control" id="businessOwnerEmail" name="businessOwnerEmail" [(ngModel)]="model.businessOwnerEmail"
-                                        required>
-                                </div>
+                            </div>
+                        </section>
+                    </template>
+                </ngb-tab>
 
-                                <div class="form-group">
-                                    <label for="technicalOwner">Technical owner</label>
-                                    <input type="text" class="form-control" id="technicalOwner" name="technicalOwner" [(ngModel)]="model.technicalOwner" required>
-                                </div>
+                <ngb-tab title="Business details">
+                    <template ngbTabContent>
+                        <section class="container form-section">
+                            <div class="form-group">
+                                <label for="businessOwner">Business owner</label>
+                                <input type="text" class="form-control" id="businessOwner" name="businessOwner" [(ngModel)]="model.businessOwner" required>
+                            </div>
 
-                                <div class="form-group">
-                                    <label for="technicalOwnerEmail">Technical owner E-mail</label>
-                                    <input type="email" class="form-control" id="technicalOwnerEmail" name="technicalOwnerEmail" [(ngModel)]="model.technicalOwnerEmail"
-                                        required>
-                                </div>
+                            <div class="form-group">
+                                <label for="businessOwnerEmail">Business owner E-mail</label>
+                                <input type="email" class="form-control" id="businessOwnerEmail" name="businessOwnerEmail" [(ngModel)]="model.businessOwnerEmail"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="technicalOwner">Technical owner</label>
+                                <input type="text" class="form-control" id="technicalOwner" name="technicalOwner" [(ngModel)]="model.technicalOwner" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="technicalOwnerEmail">Technical owner E-mail</label>
+                                <input type="email" class="form-control" id="technicalOwnerEmail" name="technicalOwnerEmail" [(ngModel)]="model.technicalOwnerEmail"
+                                    required>
                             </div>
                         </section>
                     </template>
@@ -75,12 +93,7 @@
                                 <input type="text" class="form-control" id="provider" name="provider" [(ngModel)]="model.provider" required>
                             </div>
 
-                            <div class="form-group">
-                                <label for="visibility">Visibility</label>
-                                <select class="form-control" id="visibility" name="visibility" [(ngModel)]="model.visibility" required>
-                                    <option *ngFor="let vis of visibilities" [value]="vis">{{vis}}</option>
-                                </select>
-                            </div>
+
 
                             <div class="form-group">
                                 <label for="transport">Transport protocols</label> <small id="transportHelp" class="text-muted">Hold ctrl to select multiple values</small>
@@ -124,7 +137,7 @@
                 </ngb-tab>
 
 
-                 <ngb-tab title="API definition">
+                <ngb-tab title="API definition">
                     <template ngbTabContent>
                         <section class="container form-section">
                             <div class="alert alert-info" role="alert">

@@ -22,3 +22,5 @@ export class Api {
     defaultVersion:boolean;
     gatewayEnvironments:string;
 }
+
+// https://docs.wso2.com/display/AM1100/Create+and+Publish+an+API

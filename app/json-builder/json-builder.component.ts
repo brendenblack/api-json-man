@@ -12,7 +12,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 export class JsonBuilderComponent implements OnInit{
     ngOnInit(): void {
         // Create default choices
-        this.visibilities = [ "PUBLIC", "PRIVATE" ];
+        this.visibilities = [ "Public", "Private", "Restricted" ];
         this.transportModes = [ "http", "https" ];
         this.tiers = [ "Unlimited", "Platinum", "Gold", "Silver", "Bronze" ];
 
