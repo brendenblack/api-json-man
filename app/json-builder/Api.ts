@@ -21,6 +21,24 @@ export class Api {
     responseCaching:boolean;
     defaultVersion:boolean;
     gatewayEnvironments:string;
+    apiConfigurations:ApiConfiguration[];
 }
 
 // https://docs.wso2.com/display/AM1100/Create+and+Publish+an+API
+
+export class ApiConfiguration {
+    path:string;
+    verb:string;
+    contentTypesProduced:string[] = [];
+    contentTypesConsumed:string[] = [];
+    parameters:ApiConfigurationParameter[] = [];
+
+}
+
+export class ApiConfigurationParameter {
+    constructor(public name:string) { }
+    description:string = "";
+    parameterType:string;
+    dataType:string;
+    required:boolean = false;
+}

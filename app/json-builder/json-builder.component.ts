@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
-import { Api } from "./Api"
+import { Api, ApiConfiguration, ApiConfigurationParameter } from "./Api"
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import * as _ from 'lodash';
 
 
 @Component({
@@ -12,10 +13,20 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 export class JsonBuilderComponent implements OnInit{
     ngOnInit(): void {
         // Create default choices
-        this.verbs = [ "GET", "POST", "PUT", "DELETE", "PATCH", "HEAD" ];
+        this.verbs = [ 
+            { name: "GET", checked: false },
+            { name: "POST", checked: false }, 
+            { name: "PUT", checked: false }, 
+            { name: "DELETE", checked: false }, 
+            { name: "PATCH", checked: false },
+            { name: "HEAD", checked: false }
+        ];
         this.visibilities = [ "Public", "Private", "Restricted" ];
         this.transportModes = [ "http", "https" ];
-        this.tiers = [ "Unlimited", "Platinum", "Gold", "Silver", "Bronze" ];
+        this.tiers = [ "Unlimited", "Gold", "Silver", "Bronze" ];
+        this.contentTypes = [ "application/xml", "application/json", "text/xml" ]
+        this.parameterTypes = [ "query" ];
+        this.dataTypes = [ "string", "number" ];
 
         // Initialize the form
         this.resetForm();
@@ -33,6 +44,7 @@ export class JsonBuilderComponent implements OnInit{
         this.model.cacheTimeout = 300;
         this.model.responseCaching = false;
         this.model.defaultVersion = true;
+        this.model.apiConfigurations = [];
 
         // Assign test values if development mode is enabled
         if (this.devMode) {
@@ -43,6 +55,15 @@ export class JsonBuilderComponent implements OnInit{
             this.model.technicalOwner = "Ms. Technical";
             this.model.technicalOwnerEmail = "technical@emails.com";
             this.model.tags = [ "mytag", "tag2", "tagerrific" ];
+            let config = new ApiConfiguration();
+            config.verb = "GET";
+            config.path = "/phone";
+            let param = new ApiConfigurationParameter("param1");
+            param.description = "A cool parameter";
+            param.parameterType = this.parameterTypes[0];
+            param.dataType = this.dataTypes[0];
+            config.parameters.push(param);
+            this.model.apiConfigurations.push(config);
         }
     }
 
@@ -56,13 +77,48 @@ export class JsonBuilderComponent implements OnInit{
     }
 
     addApiDefinition():void {
-        // todo
+        for (let verb of this.selectedVerbs) {
+            // TODO: determine if this path & verb already exists
+            let config = new ApiConfiguration();
+            config.path = this.urlPatternPath;
+            config.verb = verb;
+            
+            this.model.apiConfigurations.push(config);
+        }
+
+        // reset the form
+        this.urlPatternPath = "";
+        this.verbs.forEach(function(v) { v.checked = false; });
+        // for (let verb of this.verbs) {
+        //     verb.checked = false;
+        // }
+        
+    }
+    apiDefinitionParameter:string;
+    addApiDefinitionParameter(index:number, paramName:string, event:Event):void {
+        event.preventDefault();
+
+        if (paramName != null && paramName.length > 0) {
+            let param = new ApiConfigurationParameter(paramName);
+            param.dataType = this.dataTypes[0];
+            param.parameterType = this.parameterTypes[0];
+            this.model.apiConfigurations[index].parameters.push(param);
+        }
+        
     }
 
-    verbs:string[];
+    verbs:any[];
+    get selectedVerbs():string[] {
+        return _.map(_.filter(this.verbs, function(v) { return v.checked }), function(v) { return v.name });
+    }
+    urlPatternPath:string;
+
     visibilities:string[];
     transportModes:string[];
+    contentTypes:string[];
     tiers:string[];
+    parameterTypes:string[];
+    dataTypes:string[];
     devMode:boolean = true; // TODO: set to false
     newTag:string;
 

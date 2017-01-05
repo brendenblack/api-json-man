@@ -1,7 +1,8 @@
+<div class="container">
 <div class="row">
     <!-- Cluster f*** form column -->
 
-    <div class="col-sm-12 col-md-8 col-lg-6">
+    <div class="col-sm-12 col-md-8">
 
         <ngb-tabset>
             <!-- https://ng-bootstrap.github.io/#/components/tabs -->
@@ -21,14 +22,14 @@
                         <div class="form-group">
                             <label for="version">Version</label>
                             <input type="number" class="form-control" id="version" name="version" [(ngModel)]="model.version" min="1.0" required>
-                            <p id="versionHelp" class="form-text text-muted">e.g. v1.0.0, 1.0.0, v1.0 or v1.0</p>
+                            <p id="versionHelp" class="form-text text-muted">e.g. v1</p>
                         </div>
 
                         <div class="form-group">
                             <label for="visibility">Visibility</label>
                             <select class="form-control" id="visibility" name="visibility" [(ngModel)]="model.visibility" required>
-                                        <option *ngFor="let vis of visibilities" [value]="vis">{{vis}}</option>
-                                    </select>
+                                <option *ngFor="let vis of visibilities" [value]="vis">{{vis}}</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -45,8 +46,6 @@
                         <form #tagForm="ngForm" (ngSubmit)="addTag()">
                             <div class="form-group">
                                 <label for="tags">Tags</label>
-                                <!--<textarea class="form-control" id="tags" name="tags" rows="3" [(ngModel)]="model.tags"></textarea>
-                                        <p id="tagsHelp" class="form-text text-muted">Include all tags on a single line, seperated by commas (e.g. '<i>phones, multimedia, mobile</i>')</p>-->
                                 <input type="text" class="form-control" id="tags" name="tags" [(ngModel)]="newTag">
                                 <p id="tagsHelp" class="form-text text-muted">Type a tag and press enter</p>
 
@@ -99,8 +98,8 @@
             <div class="form-group">
                 <label for="transport">Transport protocols</label> <small id="transportHelp" class="text-muted">Hold ctrl to select multiple values</small>
                 <select multiple class="form-control" id="transport" name="transport" [(ngModel)]="model.transport" required [size]="(transportModes.length > 4) ? 4 : transportModes.length">
-                                    <option *ngFor="let mode of transportModes" [value]="mode">{{mode}}</option>
-                                </select>
+                    <option *ngFor="let mode of transportModes" [value]="mode">{{mode}}</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -146,16 +145,85 @@
                     <label for="urlPattern">URL Pattern</label>
                     <div class="input-group">
                         <div class="input-group-addon">{{model.context}}/{{model.version}}</div>
-                        <input type="text" class="form-control" id="urlPattern" name="urlPattern">
+                        <input type="text" class="form-control" id="urlPattern" name="urlPattern" [(ngModel)]="urlPatternPath" required placeholder="e.g. path/to/resource">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="form-check-inline" *ngFor="let verb of verbs">
-                        <input class="form-check-input" type="checkbox" name="urlPatternVerbs" value="verb"> {{verb}}
+                        <input class="form-check-input" type="checkbox" name="urlPatternVerbs" value="{{verb.name}}" [(ngModel)]="verb.checked"> {{verb.name}}
                     </label>
                 </div>
                 <button type="submit" class="btn btn-default" [disabled]="!apiDefinitionForm.form.valid">Add</button>
             </form>
+            <br>
+
+            <ngb-accordion *ngIf="model.apiConfigurations.length > 0" [closeOthers]="true">
+                <ngb-panel *ngFor="let config of model.apiConfigurations; let i = index">
+                    <template ngbPanelTitle>{{config.path}} ({{config.verb}})<span style="float:right;" class="dropdown-toggle"></span></template>
+                    <template ngbPanelContent>
+                        <div class="form-group">
+                            <label for="produces">Content types <strong>produced</strong></label> <small class="text-muted">Hold ctrl to select multiple values</small>
+                            <select multiple class="form-control" name="produces" [(ngModel)]="config.contentTypesProduced" required [size]="4">
+                                <option *ngFor="let type of contentTypes" [value]="type">{{type}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="produces">Content types <strong>consumed</strong></label> <small class="text-muted">Hold ctrl to select multiple values</small>
+                            <select multiple class="form-control" name="consumes" [(ngModel)]="config.contentTypesConsumed" required [size]="4">
+                                <option *ngFor="let type of contentTypes" [value]="type">{{type}}</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Parameters</label>
+                            <form #parameterForm="ngForm" class="form-inline" (ngSubmit)="addApiDefinitionParameter(i, parameterForm.value.parameter, $event); parameterForm.reset()" >
+                                <input type="text" class="form-control" name="parameter" ngModel placeholder="Parameter name" required>
+                                <button class="btn btn-default" type="submit" [disabled]="!parameterForm.form.valid">Add</button>
+                            </form>
+                            <br>
+                            <table *ngIf="config.parameters != null && config.parameters.length > 0" class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Parameter type</th>
+                                        <th>Data type</th>
+                                        <th>Req'd</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let param of config.parameters">
+                                        <td>{{param.name}}</td>
+                                        <td><input type="text" class="form-control form-control-sm" [(ngModel)]="param.description"></td>
+                                        <td>
+                                            <div class="form-group">
+                                            <select class="form-control form-control-sm" name="parameterType" [(ngModel)]="param.parameterType">
+                                                <option *ngFor="let type of parameterTypes" value="{{type}}">{{type}}</option>
+                                            </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <select class="form-control form-control-sm" name="dataType" [(ngModel)]="param.dataType">
+                                                <option *ngFor="let type of dataTypes" value="{{type}}">{{type}}</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <!-- TODO: center this -->
+                                            <input type="checkbox" class="form-check-input form-control-sm" [(ngModel)]="param.required">
+                                         </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm" disabled>x</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+                </ngb-panel>
+            </ngb-accordion>
+
         </section>
     </template>
 </ngb-tab>
@@ -189,18 +257,18 @@
 
 
 <!-- Output column -->
-<div class="col-sm-12 col-md-4 col-lg-4 offset-lg-2">
+<div class="col-sm-12 col-md-4">
     <h2>Output</h2>
     <!--<div *ngIf="apiForm.valid">-->
     <div class="alert alert-warning" role="alert">
-        <strong>NOTE:</strong> This is a JSON.stringify version of the API model used for development purposes. It is <strong>not the final expected output</strong>.
+        <strong>NOTE:</strong> This is simply a JSON.stringify version of the API model used for development purposes. It is <strong>not the final expected output</strong>.
     </div>
     <pre>{{diagnostic}}</pre>
 </div>
 
 <!--<div *ngIf="!apiForm.valid">
             <p class="text-muted">Provide all required fields to view the generated JSON definition.</p>
-        </div>
-    </div>-->
+        </div>-->
+</div>
 
 </div>

@@ -1,7 +1,7 @@
 {
-  "name": "angular-quickstart",
+  "name": "api-json-man",
   "version": "1.0.0",
-  "description": "QuickStart package.json from the documentation, supplemented with testing support",
+  "description": "A tool to create WSO2 API JSON files.",
   "scripts": {
     "start": "tsc && concurrently \"tsc -w\" \"lite-server\" ",
     "e2e": "tsc && concurrently \"http-server -s\" \"protractor protractor.config.js\" --kill-others --success first",
@@ -26,6 +26,7 @@
     "@angular/platform-browser-dynamic": "~2.4.0",
     "@angular/router": "~3.4.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.16",
+    "@types/lodash": "^4.14.45",
     "angular-in-memory-web-api": "~0.2.4",
     "bootstrap": "^4.0.0-alpha.5",
     "core-js": "^2.4.1",

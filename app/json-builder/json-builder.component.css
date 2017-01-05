@@ -1,9 +1,9 @@
 .ng-valid[required], .ng-valid.required  {
-  border-left: 2px solid #42A948; /* green */
+  border: 1px solid #42A948; /* green */
 }
 
 .ng-invalid:not(form)  {
-  border-left: 2px solid #a94442; /* red */
+  border: 1px solid #a94442; /* red */
 }
 
 .form-section { padding-top: 1em;}
